@@ -23,7 +23,7 @@ def get_x2_y2(line: str) -> tuple:
     return (int(x2y2[0]), int(x2y2[1]))
 
 
-def draw_line(line: str, line_map: dict) -> dict:
+def draw_line(line: str, line_map: dict, diagonals: bool = False) -> dict:
     """Adds a line to the map."""
     x1, y1 = get_x1_y1(line)
     x2, y2 = get_x2_y2(line)
@@ -34,6 +34,15 @@ def draw_line(line: str, line_map: dict) -> dict:
         for x in range(min(x1, x2), max(x1, x2) + 1):
             line_map[(x, y1)] = line_map.get((x, y1), 0) + 1
 
+    elif diagonals:
+        x_step = 1 if x2 > x1 else -1
+        y_step = 1 if y2 > y1 else -1
+        x, y = x1, y1
+        while (x, y) != (x2 + x_step, y2 + y_step):
+            line_map[(x, y)] = line_map.get((x, y), 0) + 1
+            x += x_step
+            y += y_step
+
     return line_map
 
 
@@ -41,5 +50,5 @@ if __name__ == "__main__":
     lines = load_puzzle_input('day_5_inputs.txt')
     vent_map = {}
     for l in lines:
-        vent_map = draw_line(l, vent_map)
+        vent_map = draw_line(l, vent_map, True)
     print(sum([1 for x in vent_map.values() if x >= 2]))
