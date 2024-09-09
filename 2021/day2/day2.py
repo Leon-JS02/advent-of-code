@@ -21,6 +21,19 @@ def process_command(command: str, magnitude: int,
     return (current_h, current_d)
 
 
+def process_command_revised(command, magnitude, aim, h, d):
+    """Revised version of process command for part two,"""
+    if command == 'down':
+        aim += magnitude
+    elif command == 'up':
+        aim -= magnitude
+    else:
+        h += magnitude
+        d += (aim * magnitude)
+
+    return (aim, h, d)
+
+
 def split_command(command: str) -> tuple:
     """Splits a command string into a separate command and magnitude."""
     command, magnitude = command.split(" ")
@@ -34,9 +47,20 @@ def part_one(commands: list[str]) -> int:
     for command in commands:
         c, m = split_command(command)
         current_h, current_d = process_command(c, m, current_h, current_d)
-
     return current_h * current_d
 
 
-inputs = read_input('day2-input.txt')
-print(part_one(inputs))
+def part_two(commands: list[str]) -> int:
+    """Solves the second part of day 2."""
+    current_h = current_d = aim = 0
+    for command in commands:
+        c, m = split_command(command)
+        aim, current_h, current_d = process_command_revised(
+            c, m, aim, current_h, current_d)
+    return current_h * current_d
+
+
+if __name__ == "__main__":
+    inputs = read_input('day2-input.txt')
+    print(part_one(inputs))
+    print(part_two(inputs))

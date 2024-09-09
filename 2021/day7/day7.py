@@ -13,15 +13,24 @@ def find_midpoint(data: list[int]) -> int:
     return data[len(data)//2]
 
 
+def calculate_fuel_needed(crab_position: int, point: int) -> int:
+    """Calculates the amount of fuel needed to move a crab's
+    position from one point to another."""
+    distance = abs(crab_position - point)
+    fuel_cost = (distance * (distance + 1)) // 2
+    return fuel_cost
+
+
 def find_minimum_cost(data: list[int]) -> int:
     """Solution to part 1."""
     midpoint = find_midpoint(data)
     fuel = 0
     for crab in data:
-        fuel += abs(midpoint - crab)
+        fuel += calculate_fuel_needed(crab, midpoint)
     return fuel
 
 
 if __name__ == "__main__":
     inputs = load_puzzle_input('day_7_input.txt')
     print(find_minimum_cost(inputs))
+    print(calculate_fuel_needed(16, 5))
