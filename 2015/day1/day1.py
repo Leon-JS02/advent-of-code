@@ -16,6 +16,26 @@ def building_floor(floors: list[str]) -> int:
     return current_floor
 
 
+def first_basement_entrance(floors: list[str]) -> int:
+    """Returns the position of the character which first causes
+    entrance into the basement."""
+    current_floor = 0
+    position = 0
+    for floor in floors:
+        position += 1
+
+        if floor == '(':
+            current_floor += 1
+        elif floor == ')':
+            current_floor -= 1
+
+        if current_floor == -1:
+            return position
+
+    return -1
+
+
 if __name__ == "__main__":
     inputs = load_inputs('day1_input.txt')
     print(building_floor(inputs))
+    print(first_basement_entrance(inputs))
