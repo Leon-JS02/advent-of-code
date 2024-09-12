@@ -11,15 +11,14 @@ def load_input(filename: str) -> list[str]:
 def process_direction(direction: str, current_loc: tuple[int, int]) -> tuple[int, int]:
     """Processes a single direction command and returns the new location."""
     x, y = current_loc
-    match direction:
-        case "^":
-            new_dir = (x, y + 1)
-        case ">":
-            new_dir = (x + 1, y)
-        case "v":
-            new_dir = (x, y - 1)
-        case "<":
-            new_dir = (x - 1, y)
+    direction_map = {
+        "^": lambda x, y: (x, y + 1),
+        ">": lambda x, y: (x + 1, y),
+        "v": lambda x, y: (x, y - 1),
+        "<": lambda x, y: (x - 1, y)
+    }
+    x, y = current_loc
+    new_dir = direction_map[direction](x, y)
     return new_dir
 
 
@@ -42,7 +41,7 @@ def extract_unique_locations(locations1: dict, locations2) -> int:
 
 def process_direction_string_robo(directions: list[str]) -> dict:
     """Returns a dictionary of house locations for both robo and Santa."""
-    santa_list = directions[::22]
+    santa_list = directions[::2]
     robo_list = directions[1::2]
     santa_visits = process_direction_string(santa_list)
     robo_visits = process_direction_string(robo_list)
