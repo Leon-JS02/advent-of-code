@@ -34,7 +34,24 @@ def process_direction_string(directions: list[str]) -> dict:
     return visited_locations
 
 
+def extract_unique_locations(locations1: dict, locations2) -> int:
+    """Returns the number of unique locations between two dictionaries."""
+    total = list(locations1.keys()) + list(locations2.keys())
+    return set(total)
+
+
+def process_direction_string_robo(directions: list[str]) -> dict:
+    """Returns a dictionary of house locations for both robo and Santa."""
+    santa_list = directions[::22]
+    robo_list = directions[1::2]
+    santa_visits = process_direction_string(santa_list)
+    robo_visits = process_direction_string(robo_list)
+    return extract_unique_locations(santa_visits, robo_visits)
+
+
 if __name__ == "__main__":
     inputs = load_input('day3_inputs.txt')
     house_map = process_direction_string(inputs)
     print(f"Number of houses visited: {len(house_map)}")
+    visited_houses = process_direction_string_robo(inputs)
+    print(len(visited_houses))
